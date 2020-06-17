@@ -377,17 +377,17 @@ def dropsession():
 def admin():
     if session['username'] == 'admin':
         if request.method == 'POST':
-            sdata = collection_Shop.find()
-            shopdata = []
-            for i in sdata:
-                if i["pic"] not in shopdata:
-                    shopdata.append(i["pic"])
-            
-            for i in shopdata:
-                if request.form["productpic"] == i or shopdata == []:
+            item_id = request.form['productid']
+            item_name = request.form['productname']
+            item_color = request.form['productcolor']
+            item_pic = request.form['productpic']
+            item_price = request.form["productprice"]
+            for i in collection_Shop.find():
+                if (i["id"] == item_id and i["name"] != item_name) or (i["id"] == item_id and i["name"] == item_name and i["color"] == item_color ):
                     flash("Trùng dữ liệu!")
                     return redirect(request.url)
-            data_product = {'id':request.form['productid'], 'name':request.form['productname'],'pic':request.form['productpic'], 'price':request.form['productprice'],'color':request.form['productcolor']}
+
+            data_product = {'id':item_id, 'name':item_name,'pic':item_pic, 'price':item_price,'color':item_color}
             collection_Shop.insert_one(data_product)
             flash("Thành công!")
             return redirect(request.url)
