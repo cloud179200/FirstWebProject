@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SHOP</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/header.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main_1.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/footer.css')}}">
+    <script src="https://kit.fontawesome.com/1c8503ddd9.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="/">
+                <img src="{{url_for('static', filename='images/adidas_logo.png')}}" alt="logo-adidas">
+            </a>
+        </div>
+        <div class="product-header">
+            <div class="search-box">
+                <form method="POST" id="search">
+                    <input class="search-txt" type="text" name="search-key" placeholder="Tìm kiếm...">
+                    <button class="search-btn" type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+            <div class="user-box">
+                <div class="user-menu">
+                    {% if user %}
+                        <p href="#" style="text-transform: capitalize;" >{{ user }}|<a href="/dropsession">Đăng xuất</a></p>
+                    {% else %}
+                        <a href="/login">Đăng nhập</a>
+                    {% endif %}
+                </div>
+                <a class="user-btn" href="#" title="Người dùng"><i class="fas fa-user"></i></a>
+            </div>
+            <div class="bag-box">
+                <a class="bag-btn" href="/bill_info" title="Giỏ hàng"><i class="fas fa-shopping-bag"></i></a>
+            </div>
+        </div>
+        <div class="menu-products">
+            <a class="menu-products-btn" href="#">Sản phẩm<i class="fas fa-chevron-right"></i></a>
+            <div class="s-menu-products">
+                <a href="/ao">Áo</a>
+                <a href="/quan">Quần</a>
+            </div>
+        </div>
+    </header>
+    <main>
+    <table class="product-table">
+        {% for i in products_id %}
+            {% if i == products_id[0] %}
+            <tr class="product-table-body">
+            {% endif %}
+            <td>
+                <div class="products">
+                    <div class="product-card">
+                        <div class="product-pic" id="pic-{{products_id.index(i)}}" style="background-image: url( {{products_pic[products_id.index(i)]}} )"></div>
+                        <div class="product-colors" id="color-{{products_id.index(i)}}">
+                            {% for j in products %}
+                                {% if i == j['id'] %}
+                                    {% if j['pic'] in products_pic %}
+                                    <span class="{{ j['color'] }} active" data-color="{{ j['color'] }}" data-pic="url({{ j['pic'] }})"></span>
+                                    {% else %}
+                                    <span class="{{ j['color'] }}" data-color="{{ j['color'] }}" data-pic="url({{ j['pic'] }})"></span>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="product-info">
+                            <h4 class="product-name">{{ products_name[products_id.index(i)] }}</h4>
+                            <div class="product-price">{{ products_price[products_id.index(i)] }}₫</div>
+                        </div>
+                        <form action="" method="POST">
+                            {% for j in products %}
+                                {% if i == j['id'] and j["pic"] in products_pic %}
+                                <input type="text" name="color" id="color-cart-{{products_id.index(i)}}" value="{{ j['color'] }}" style="display: none;">
+                                <input type="text" name="price" value="{{ products_price[products_id.index(i)] }}" style="display: none;">
+                                <input type="text" name="name" value="{{ products_name[products_id.index(i)] }}" style="display: none;">
+                                <input type="text" name="id" value="{{ i }}" style="display: none;">
+                                <button type="submit" class="product-btn" >Thêm vào giỏ</button>
+                                {% endif %}
+                            {% endfor %}
+                        </form>
+                    </div>
+                </div>
+                <script>
+                    $("#color-{{products_id.index(i)}} span").click(function()
+                    {
+                        $("#color-{{products_id.index(i)}} span").removeClass("active");
+                        $(this).addClass("active");
+                        $("#pic-{{products_id.index(i)}}").css("background-image",$(this).attr("data-pic"));
+                        var col = $(this).attr("data-color");
+                        $("#color-cart-{{products_id.index(i)}}").val(col);
+                    });
+                </script>
+            </td>
+            {% if products_id.index(i)%3 == 0 and i!=products_id[0] and i!=product_id[-1] %}
+                </tr>
+                <tr>
+            {% elif i==products_id[-1] %}
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </table>
+    </main>
+    <footer style="position: absolute;bottom: 0px;">
+        <div class="footer-about">
+            <table>
+                <tr>
+
+                    <th><h3>Danh sách cửa hàng</h3></th>
+                    <th><h3>Danh sách Thành viên</h3></th>
+                    <th><h3>Công Ty</h3></th>
+                    <th><h3>Chính sách</h3></th>
+                </tr>
+                <tr>
+                    <td><a href="">XXX- Thai Ha Disct. - Ha Noi</a></td>
+                    <td><a href="">Lê Việt Anh</a></td>
+                    <td><a href="">......</a></td>
+                    <td><a href="">......</a></td>
+                </tr>
+                <tr>
+                    <td><a href=""></a></td>
+                    <td><a href="">Nguyễn Sỹ Quân</a></td>
+                    <td><a href=""></a></td>
+                    <td><a href=""></a></td>
+                </tr>
+                <tr>
+                    <td><a href=""></a></td>
+                    <td><a href="">Nguyễn Phan Nhân</a></td>
+                    <td><a href=""></a></td>
+                    <td><a href=""></a></td>
+                </tr>
+                <tr>
+                    <td><a href=""></a></td>
+                    <td><a href="">Thanh Hải</a></td>
+                    <td><a href=""></a></td>
+                    <td><a href=""></a></td>
+                </tr>
+            </table>
+        </div>
+        <div class="footer-text-bottom">
+            <div class="content">
+                <h4>Im Just A Web Shop</h4>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

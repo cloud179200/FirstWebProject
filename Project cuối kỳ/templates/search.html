@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Search...</title>
+</head>
+<body style="display: block;">
+    <h1 class="display-3">Từ khóa: {{search_key}}</h1>
+    <table style="width: 100%;">
+        <tr>
+    {% for i in result %}
+        <td style="padding: 0 5%">
+        <div class="card">
+            <img src="{{i['pic']}}" class="card-img-top" alt="...">
+            <div class="card-body">
+            <h5 class="card-title">{{i['name']}}</h5><h5 style="text-transform: capitalize;">{{i["color"]}}</h5>
+            <p class="card-text">{{i["price"]}}₫</p>
+            </div>
+        </div>
+        </td>
+        {% if (result.index(i)+1)%3 == 0  and result.index(i) != 0  %}
+            </tr>
+            <tr>
+        {% elif i == result[-1] %}
+            </tr>
+        {% endif %}
+    {% endfor %}
+    </table>
+</body>
+</html>

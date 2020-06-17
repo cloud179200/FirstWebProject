@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SHOP</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/only_btn.css')}}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js"></script>
+</head>
+<body style="background-color: rgb(207, 169, 111);">
+  <h1 class="display-3" style="width: 80%; margin: 0% 15%;padding: 0% 8%;padding-top: 3%;">Thông Tin Khách Hàng</h1>
+  <h1 class="display-4" style="width: 80%; margin: 0% 15%;padding: 0% 8%;">Mã đơn {{id_bill}}</h1>
+  {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message == "Thành công gửi đơn hàng!" %}
+                    <div class="alert alert-primary" role="alert" style="width: 70%; margin: 2% 15%;">{{message}}</div>
+                    {% else %}
+                    <div class="alert alert-warning" role="alert" style="width: 70%; margin: 2% 15%;">{{message}}</div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+  <div style="display: flex;border: 2px solid #9e6009; width: 90%; margin: 0% 5%;padding: 3% 3%">
+    <form method="POST" style="width: 70%; margin: 5% 0%;padding: 3% 0%;background-color: rgb(207, 169, 111);">
+      <div class="form-group">
+        <label for="exampleFormControlInput1">Họ Và Tên</label>
+        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nguyễn Văn A" name="name">
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlInput1">Email</label>
+        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="xxx@gmail.com..." name="email">
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlInput1">Số Điện Thoại</label>
+        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="012345..." name="phone">
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlInput1">Địa Chỉ</label>
+        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Số xxx - Đường xxx..." name="address">
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlSelect1">Tỉnh - Thành Phố</label>
+        <select class="form-control" id="exampleFormControlSelect1" name="city">
+          {% for i in city_vn %}
+          <option value="{{i}}">{{i}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      {% if cart != [] %}
+        {% for i in cart %}
+          <input type="number" name="number-{{ cart.index(i) }}" id="number-{{ cart.index(i) }}" value="1" style="display: none;">
+        {% endfor %}
+      {% endif %}
+      <button type="submit" class="btn btn-primary btn-lg btn-block" id="submit-bill">Hoàn Tất Đơn Hàng</button>
+    </form>
+    <script>
+      $("#submit-bill").click( function(){
+    {% for i in cart %}
+            $("#number-{{ cart.index(i) }}").val($("#numbers-{{ cart.index(i) }}").val());
+    {% endfor %}
+          });
+    
+    </script>
+    {% if cart == [] %}
+    <h4 style="width: max-content;width: 60%">Giỏ hàng chưa có sản phẩm nào!</h4>
+    {% else %}
+    <div style="width: 60%;margin-left: 2%">
+      <table >
+        <tr>
+          <th><h4 style="width: max-content;">Sản phẩm</h4></th>
+          <th><h4 style="width: max-content;padding-left: 10%;">Số lượng</h4></th>
+          <th><h4 style="width: max-content;padding-left: 10%;">Giá tiền</h4></th>
+          <th style="display: none"><h3></h3></th>
+        </tr>
+      {% for i in cart %}
+        {% for j in products %}
+          {% if i["id"]==j["id"] and i["price"] == j["price"] and i["color"] == j["color"] %}
+          <tr id="product-{{ cart.index(i) }}">
+            <td style="width: 45%">
+              <div class="card" style="border-radius: 5%;margin-bottom: 5%">
+                <img src="{{ j['pic'] }}" class="card-img-top" alt="..." style="border-top-left-radius: 5%;border-top-right-radius: 5%;">
+                <div class="card-body">
+                  <p class="card-text">{{ j["name"] }}</p>
+                </div>
+              </div>
+            </td>
+            <td style="padding: 0 5%;">
+              <div class="form-group" style="margin-bottom: 0;">
+                <input type="number" class="form-control" id="numbers-{{ cart.index(i) }}" value="1">
+              </div>
+            </td>
+            <td style="padding-left: 5%;">
+              <h4 class="display-3" style='font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";font-size: 1rem;font-weight: 400;line-height: 1.5; color: #212529;'>{{j['price']}}</h1>
+            </td>
+          <td style="padding-left: 5%;">
+            <button type="button" class="btn btn-danger" id='product-btn-{{ cart.index(i) }}'>Xóa</button>
+          </td>
+        </tr>
+            {% endif %}
+        {% endfor %}
+        <script>
+          $("#product-btn-{{ cart.index(i) }}").click( function()
+          {
+            $("#numbers-{{ cart.index(i) }}").val(0);
+            $('#product-{{ cart.index(i) }}').css("display", "none");
+          });
+        </script>
+      {% endfor %}
+    </table>
+    </div>
+    {% endif %}
+  </div>
+</body>
+</html>

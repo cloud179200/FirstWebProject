@@ -1,0 +1,35 @@
+footer{
+    background-color: whitesmoke;
+    position: relative;
+    width: 100%;
+    border-top: 3px solid black;
+}
+.footer-about{
+    border-top: 3px solid #e7e7e7;
+}
+.footer-about table{
+    position: relative;
+    align-items: center;
+    justify-items: center;
+    width: 70%;
+    text-align: left;
+    padding: 20px 0px 40px;
+    margin: 0px 16%;
+}
+.footer-about tr td a{
+    padding-left: 15px;
+    color: black;
+}
+
+.footer-text-bottom{
+    border-top: 1px solid #e7e7e7;
+    border-bottom: 1px solid #e7e7e7;
+    background-color: white;
+    align-self: center;
+}
+
+.footer-text-bottom .content{
+    padding: 5px 0 5px 0;
+    font-size: 16px;
+    text-align: center;
+}

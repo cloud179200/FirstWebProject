@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Admin Login </title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/only_btn.css')}}">
+    </head>
+    <body style="background-color: rgb(207, 169, 111);">
+        <h1 class="display-3" style="width: 80%; margin: 0% 15%;padding: 3% 8%;">Thông Tin Sản Phẩm</h1>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message == "Thành công!" %}
+                    <div class="alert alert-primary" role="alert" style="width: 70%; margin: 2% 15%;">{{message}}</div>
+                    {% else %}
+                    <div class="alert alert-warning" role="alert" style="width: 70%; margin: 2% 15%;">{{message}}</div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <form method="POST" style="width: 70%; margin: 0% 15%;padding: 3% 8%;background-color: rgb(207, 169, 111);border: 2px solid #9e6009;">
+            <div class="form-group">
+              <label for="exampleFormControlInput1">ID sản phẩm</label>
+              <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="vd: a0001" name="productid">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Tên sản phẩm</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="vd: Áo Thun (lưu ý khi có sản phẩm trùng tên phải thêm số phía sau để phân biệt)" name="productname">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Link ảnh minh họa</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="vd: https://product.hstatic.net/1000341789/product/mausac_melange_10s20tsh031__2__57418bb5d7e04107ae8f0360549da12a_1024x1024.jpg" name="productpic">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Giá thành</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="vd: 499,000" name="productprice">
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlSelect1">Màu</label>
+              <select class="form-control" id="exampleFormControlSelect1" name="productcolor">
+                <option value='black' style="color: black;">BLACK</option>
+                <option value='white' style="color: rgb(175, 168, 168);">WHITE</option>
+                <option value='red' style="color: red;">RED</option>
+                <option value='brown' style="color: brown;">BROWN</option>
+                <option value='orange' style="color: orange;">ORANGE</option>
+                <option value='gray' style="color: gray;">GRAY</option>
+                <option value='green' style="color: green;">GREEN</option>
+                <option value='blue' style="color: blue;">BLUE</option>
+                <option value='purple' style="color: purple;">PURPLE</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Gửi</button>
+        </form>
+    </body>
+</html>
