@@ -103,15 +103,14 @@ def ao():
                 price = request.form["price"]
                 id = request.form['id']
                 
-                test = True
+                test_num = 0
                 
                 for i in collection_Cart.find():
-                    if (i["id"] == id and i["name"] != name) or (i["id"] == id and i["name"] == name and i["color"] == color) or (i["name"] == name and i["id"] != id):
-                        test = False
-                        break
+                    if i["name"] == name and i["color"] == color and i["id"] == id:
+                        test_num = 1
                 
-                if test == True:
-                    data = {"id":id, "name": name, "color": color, "price": price.split(",")[0]}
+                if test_num == 0:
+                    data = {"id":id, "name": name, "color": color, "price": price}
                     collection_Cart.insert_one(data)
             
             else:
